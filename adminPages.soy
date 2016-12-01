@@ -1,0 +1,114 @@
+{namespace ZEPHYR.Templates.Admin}
+
+/**
+ * Render the dialog for cloning the test step
+ * @param data The table row data.
+ * @param i18n
+ */
+{template .editExecutionStatus}
+    <div class="executionStatus">
+        <form action="#" id="editDialogForm" class="aui">
+            <fieldset>
+                <div class="field-group">
+                    <label for="editExecutionStatus">Status<span class="aui-icon icon-required"> {$i18n['zephyr.required.label']}</span></label>
+                    <input size="30" class="text" type="text" id="editExecutionStatus" name="editExecutionStatus" title={$i18n['execute.test.executionstatus.label']} value="{$data.status}" />
+                </div>
+                <div class="field-group">
+                    <label for="editExecutionDescription">{$i18n['zephyr.admin.plugin.execstatus.desc']}</label>
+                    <input size="60" class="text long-field" type="text" id="editExecutionDescription" name="editExecutionDescription" title={$i18n['execute.test.execution.description']} value="{$data.description}" />
+                </div>
+                <div class="field-group">
+                    <label for="d-fname">{$i18n['zephyr.admin.plugin.execstatus.exec.color']}<span class="aui-icon icon-required"> {$i18n['zephyr.required.label']}</span></label>
+                    <input size="40" value="{$data.color}" class="text" type="text" id="dialogColorInput" size="40" name="statusColor" title={$i18n['zephyr.admin.plugin.execstatus.exec.color']} />
+                    <span id="dialogColorSpan" class="colorSpan"></span>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{/template}
+/**
+ * Render the dialog for cloning the test step
+ * @param rowData The table row data.
+ * @param i18n
+ * @param execStatusCount
+ */
+{template .deleteExecutionStatus}
+    <ul class="aui-message warning deleteMsg">
+        <li class="aui-icon icon-warning"></li>
+        <li>
+            {call ZEPHYR.Messages.getText data="['zephyr.admin.plugin.execstatus.delete.confirm.message', $execStatusCount]" /}
+        </li>
+    </ul>
+    <ul class="selectExecutionStatus">
+        <li>{$i18n['zephyr.admin.plugin.execstatus.delete.matching.schedules']} : </li>
+        <li>
+            <select id="executionStatusDropdownBox" name="executionStatusDropdownBox-dd" class="executionStatusDropdownBox" data-mappedid="{$rowData[0].id}">
+                {foreach $data in $rowData}
+                    <option value="{$data.id}">{$data.name}</option>
+                {/foreach}
+            </select>
+        </li>
+    </ul>
+{/template}
+
+/**
+ * Render the dialog for cloning the test step
+ * @param rowData The table row data.
+ * @param i18n
+ * @param execStatusCount
+ * @param progress
+ */
+{template .deleteStepResultStatus}
+    <ul class="aui-message warning deleteMsg">
+        <li class="aui-icon icon-warning"></li>
+        <li>
+            {call ZEPHYR.Messages.getText data="['zephyr.admin.plugin.stepresult.status.delete.confirm.message', $execStatusCount]" /}
+        </li>
+    </ul>
+    <ul class="progress-bar-container">
+        <div id="jobProgressBar" class="aui-progress-indicator" style="display: none;">
+            <span class="aui-progress-indicator-value"> {$progress} </span>
+        </div>
+        <div id="progressMsgDiv"></div>
+    </ul>
+    <ul class="selectExecutionStatus">
+        <li>{$i18n['zephyr.admin.plugin.stepresult.status.delete.matching.schedules']} : </li>
+        <li>
+            <select id="executionStatusDropdownBox" name="executionStatusDropdownBox-dd" class="executionStatusDropdownBox" data-mappedid="{$rowData[0].id}">
+                {foreach $data in $rowData}
+                    <option value="{$data.id}">{$data.name}</option>
+                {/foreach}
+            </select>
+        </li>
+    </ul>
+{/template}
+/**
+ * Render the dialog for cloning the test step
+ * @param tableData The table data.
+ * @param i18n
+ */
+{template .renderTable}
+    {foreach $data in $tableData}
+        <tr data-id="{$data.id}" data-type="{$data.type}" data-name="{$data.name}">
+            <td headers="execution-status">{$data.name}</td>
+            <td headers="execution-description">{$data.description}</td>
+            <td headers="execution-color">
+                <div class="executionColor" data-color="{$data.color}"></div>
+            </td>
+            <td headers="execution-operations">
+                <a class="edit" href="#">{$i18n['zephyr.edit.button.title']}</a>
+                {if $data.type==1}
+                    <a class="delete" href="#">{$i18n['zephyr.delete.button.title']}</a>
+                {/if}
+            </td>
+        </tr>
+    {/foreach}
+{/template}
+/**
+ * Renders the color picker.
+ */
+{template .renderColorPicker}
+    <div id='colorPickerCanvas'>
+        <canvas width='192' height='192' id='canvas_picker'></canvas>
+    </div>
+{/template}
